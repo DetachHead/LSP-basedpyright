@@ -184,9 +184,8 @@ class LspBasedpyrightPlugin(NpmClientHandler):
         if python_path := settings.get("python.pythonPath"):
             return python_path
 
-        if workspace_folders:
-            workspace_folder = Path(workspace_folders[0].path)
-            for folder in (workspace_folder, *workspace_folder.parents):
+        if workspace_folders and (first_folder := Path(workspace_folders[0].path).resolve()):
+            for folder in (first_folder, *first_folder.parents):
                 if python_path := cls.python_path_from_venv(folder):
                     return str(python_path)
 
